@@ -1,0 +1,24 @@
+{
+  "name": "lswstore",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "lucide-react": "^0.447.0",
+    "next": "14.2.14",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-icons": "^5.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.14",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1"
+  }
+}
