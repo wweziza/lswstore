@@ -4,14 +4,14 @@ import { Search, User, Menu, X, ChevronDown, Star } from 'lucide-react';
 import Footer from './components/footer';
 
 const games = [
-  { name: 'Genshin Impact', image: '/api/placeholder/150/150', rating: 4.8, players: '50M+' },
-  { name: 'Mobile Legends', image: '/api/placeholder/150/150', rating: 4.6, players: '100M+' },
-  { name: 'Valorant', image: '/api/placeholder/150/150', rating: 4.7, players: '30M+' },
-  { name: 'PUBG Mobile', image: '/api/placeholder/150/150', rating: 4.5, players: '80M+' },
-  { name: 'Call of Duty Mobile', image: '/api/placeholder/150/150', rating: 4.4, players: '70M+' },
-  { name: 'Free Fire', image: '/api/placeholder/150/150', rating: 4.3, players: '90M+' },
-  { name: 'Apex Legends', image: '/api/placeholder/150/150', rating: 4.6, players: '40M+' },
-  { name: 'League of Legends', image: '/api/placeholder/150/150', rating: 4.7, players: '110M+' },
+  { name: 'Genshin Impact', image: 'https://cdn.unipin.com/images/icon_product_pages/1645066883-icon-WeChat%20Image_20220217093952.jpg', rating: 4.8, players: '50M+' },
+  { name: 'Mobile Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1714098015-icon-mlbb%20icon%20200x200_11zon.png', rating: 4.6, players: '100M+' },
+  { name: 'Valorant', image: 'https://cdn.unipin.com/images/icon_product_pages/1657683755-icon-1656391130-icon-riot.jpg', rating: 4.7, players: '30M+' },
+  { name: 'PUBG Mobile', image: 'https://cdn.unipin.com/images/icon_product_pages/1592228250-icon-pubgm.jpg', rating: 4.5, players: '80M+' },
+  { name: 'Call of Duty Mobile', image: 'https://cdn.unipin.com/images/icon_product_pages/1633599388-icon-Icon_1024.jpg', rating: 4.4, players: '70M+' },
+  { name: 'Free Fire', image: 'https://cdn.unipin.com/images/icon_product_pages/1658817763-icon-200x200_icon%20ff.jpg', rating: 4.3, players: '90M+' },
+  { name: 'Apex Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1656465259-icon-apex%20legends.jpg', rating: 4.6, players: '40M+' },
+  { name: 'Honor of Kings', image: 'https://cdn.unipin.com/images/icon_product_pages/1710496662-icon-hok.png', rating: 4.7, players: '110M+' },
 ];
 
 export default function HomePage() {
@@ -19,7 +19,7 @@ export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
-  const fullText = 'Topup & Get a New Experience in Gaming';
+  const fullText = 'Toopup & Get a New Experience in Gaming';
 
   useEffect(() => {
     let i = 0;
