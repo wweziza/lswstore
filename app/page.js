@@ -2,21 +2,21 @@
 import React, { useState, useEffect } from 'react';
 import { Search, User, Menu, X, ChevronDown, Star } from 'lucide-react';
 import Footer from './components/footer';
-
+import Link from 'next/link';
+import Navbar from './components/navbar';
 const games = [
-  { name: 'Genshin Impact', image: 'https://cdn.unipin.com/images/icon_product_pages/1645066883-icon-WeChat%20Image_20220217093952.jpg', rating: 4.8, players: '50M+' },
-  { name: 'Mobile Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1714098015-icon-mlbb%20icon%20200x200_11zon.png', rating: 4.6, players: '100M+' },
-  { name: 'Valorant', image: 'https://cdn.unipin.com/images/icon_product_pages/1657683755-icon-1656391130-icon-riot.jpg', rating: 4.7, players: '30M+' },
-  { name: 'PUBG Mobile', image: 'https://cdn.unipin.com/images/icon_product_pages/1592228250-icon-pubgm.jpg', rating: 4.5, players: '80M+' },
-  { name: 'Call of Duty Mobile', image: 'https://cdn.unipin.com/images/icon_product_pages/1633599388-icon-Icon_1024.jpg', rating: 4.4, players: '70M+' },
-  { name: 'Free Fire', image: 'https://cdn.unipin.com/images/icon_product_pages/1658817763-icon-200x200_icon%20ff.jpg', rating: 4.3, players: '90M+' },
-  { name: 'Apex Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1656465259-icon-apex%20legends.jpg', rating: 4.6, players: '40M+' },
-  { name: 'Honor of Kings', image: 'https://cdn.unipin.com/images/icon_product_pages/1710496662-icon-hok.png', rating: 4.7, players: '110M+' },
+  { id: 1, name: 'Genshin Impact', image: 'https://cdn.unipin.com/images/icon_product_pages/1645066883-icon-WeChat%20Image_20220217093952.jpg', rating: 4.8, players: '50M+', type: 'mobile' },
+  { id: 2, name: 'Mobile Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1714098015-icon-mlbb%20icon%20200x200_11zon.png', rating: 4.6, players: '100M+', type: 'mobile' },
+  { id: 3, name: 'Valorant', image: 'https://cdn.unipin.com/images/icon_product_pages/1657683755-icon-1656391130-icon-riot.jpg', rating: 4.7, players: '30M+', type: 'pc' },
+  { id: 4, name: 'PUBG Mobile', image: 'https://cdn.unipin.com/images/icon_product_pages/1592228250-icon-pubgm.jpg', rating: 4.5, players: '80M+', type: 'mobile' },
+  { id: 5, name: 'Call of Duty Mobile', image: 'https://cdn.unipin.com/images/icon_product_pages/1633599388-icon-Icon_1024.jpg', rating: 4.4, players: '70M+', type: 'mobile' },
+  { id: 6, name: 'Free Fire', image: 'https://cdn.unipin.com/images/icon_product_pages/1658817763-icon-200x200_icon%20ff.jpg', rating: 4.3, players: '90M+', type: 'mobile' },
+  { id: 7, name: 'Apex Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1656465259-icon-apex%20legends.jpg', rating: 4.6, players: '40M+', type: 'pc' },
+  { id: 8, name: 'Honor of Kings', image: 'https://cdn.unipin.com/images/icon_product_pages/1710496662-icon-hok.png', rating: 4.7, players: '110M+', type: 'mobile' },
 ];
 
 export default function HomePage() {
   const [typedText, setTypedText] = useState('');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const fullText = 'Toopup & Get a New Experience in Gaming';
@@ -37,37 +37,12 @@ export default function HomePage() {
 
   const filteredGames = games.filter(game => 
     game.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategory === 'All' || game.name.includes(selectedCategory))
+    (selectedCategory === 'All' || game.type === selectedCategory.toLowerCase())
   );
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-3xl text-black font-bold">
-            <span className="text-red-500">L</span>SW
-          </div>
-          <div className="hidden md:flex items-center space-x-6">
-            <a href="#" className="text-gray-600 hover:text-blue-500 transition">Home</a>
-            <a href="#" className="text-gray-600 hover:text-blue-500 transition">Games</a>
-            <a href="#" className="text-gray-600 hover:text-blue-500 transition">About</a>
-            <User className="text-gray-600 cursor-pointer hover:text-blue-500 transition" />
-          </div>
-          <div className="md:hidden">
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <X /> : <Menu />}
-            </button>
-          </div>
-        </nav>
-        {isMenuOpen && (
-          <div className="md:hidden bg-white py-2">
-            <a href="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Home</a>
-            <a href="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">Games</a>
-            <a href="#" className="block px-4 py-2 text-gray-600 hover:bg-gray-100">About</a>
-          </div>
-        )}
-      </header>
-
+      <Navbar/>
       <main>
         <section className="container mx-auto px-4 py-16 flex flex-col md:flex-row items-center">
           <div className="w-full md:w-1/2 pr-0 md:pr-8 mb-8 md:mb-0">
@@ -106,11 +81,11 @@ export default function HomePage() {
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
-                  <Search className="absolute left-3 top-2.5 text-black-400" size={20} />
+                  <Search className="absolute left-3 top-2.5 text-gray-400" size={20} />
                 </div>
                 <div className="relative">
                   <select 
-                    className="appearance-none bg-white border rounded-full px-4 py-2 pr-8 cursor-pointer"
+                    className="appearance-none bg-white border rounded-full px-4 py-2 pr-8 cursor-pointer text-gray-700"
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
                   >
@@ -119,23 +94,25 @@ export default function HomePage() {
                     <option>PC</option>
                     <option>Console</option>
                   </select>
-                  <ChevronDown className="absolute right-2 top-2.5 text-black-400 pointer-events-none" size={20} />
+                  <ChevronDown className="absolute right-2 top-2.5 text-gray-400 pointer-events-none" size={20} />
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredGames.map((game, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center transition hover:shadow-lg">
-                  <img src={game.image} alt={game.name} className="w-32 h-32 object-cover rounded-lg mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-800 mb-2">{game.name}</h3>
-                  <div className="flex items-center mb-2">
-                    <Star className="text-yellow-400 mr-1" size={16} />
-                    <span className="text-sm text-gray-600">{game.rating} ({game.players} players)</span>
+              {filteredGames.map((game) => (
+                <Link href={`/id/${game.id}`} key={game.id}>
+                  <div className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center transition hover:shadow-lg cursor-pointer">
+                    <img src={game.image} alt={game.name} className="w-32 h-32 object-cover rounded-lg mb-4" />
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{game.name}</h3>
+                    <div className="flex items-center mb-2">
+                      <Star className="text-yellow-400 mr-1" size={16} />
+                      <span className="text-sm text-gray-600">{game.rating} ({game.players} players)</span>
+                    </div>
+                    <span className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition">
+                      Top Up
+                    </span>
                   </div>
-                  <button className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-full text-sm hover:bg-blue-600 transition">
-                    Top Up
-                  </button>
-                </div>
+                </Link>
               ))}
             </div>
             <div className="mt-12 text-center">
