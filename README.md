@@ -37,7 +37,7 @@ Star really appreciated <3
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/gameboost.git
+   git clone https://github.com/wweziza/lswstore.git
    cd gameboost
    ```
 
@@ -49,7 +49,11 @@ Star really appreciated <3
 3. Set up environment variables:
    Create a `.env.local` file in the root directory and add the following:
    ```
-   DATABASE_URL=your_mysql_connection_string
+      MYSQL_HOST=localhost
+      MYSQL_USER=root
+      MYSQL_PASSWORD=
+      MYSQL_DATABASE=lswstore
+      NEXTAUTH_SECRET=secretkeyhere
    ```
 
 4. Run the development server:
