@@ -5,6 +5,7 @@ export const Button = ({ children, onClick, variant = 'default', className = '',
     const variantStyles = {
       default: 'bg-blue-500 text-white hover:bg-blue-600',
       outline: 'border border-gray-400 text-gray-900 hover:bg-gray-100',
+      black: 'text-gray-600 hover:bg-gray-100',
     };
     
     return (

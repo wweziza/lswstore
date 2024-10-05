@@ -42,7 +42,7 @@ const Navbar = () => {
           )}
         </div>
         <div className="md:hidden text-black-200">
-          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button className="text-gray-600"onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
