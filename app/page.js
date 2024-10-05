@@ -1,22 +1,12 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { Search, User, Menu, X, ChevronDown, Star } from 'lucide-react';
+import { Search, ChevronDown, Star } from 'lucide-react';
 import Footer from './components/footer';
 import Link from 'next/link';
 import Navbar from './components/navbar';
-//temp
-const games = [
-  { id: 1, name: 'Genshin Impact', image: 'https://cdn.unipin.com/images/icon_product_pages/1645066883-icon-WeChat%20Image_20220217093952.jpg', rating: 4.8, players: '50M+', type: 'mobile' },
-  { id: 2, name: 'Mobile Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1714098015-icon-mlbb%20icon%20200x200_11zon.png', rating: 4.6, players: '100M+', type: 'mobile' },
-  { id: 3, name: 'Valorant', image: 'https://cdn.unipin.com/images/icon_product_pages/1657683755-icon-1656391130-icon-riot.jpg', rating: 4.7, players: '30M+', type: 'pc' },
-  { id: 4, name: 'PUBG Mobile', image: 'https://cdn.unipin.com/images/icon_product_pages/1592228250-icon-pubgm.jpg', rating: 4.5, players: '80M+', type: 'mobile' },
-  { id: 5, name: 'Call of Duty Mobile', image: 'https://cdn.unipin.com/images/icon_product_pages/1633599388-icon-Icon_1024.jpg', rating: 4.4, players: '70M+', type: 'mobile' },
-  { id: 6, name: 'Free Fire', image: 'https://cdn.unipin.com/images/icon_product_pages/1658817763-icon-200x200_icon%20ff.jpg', rating: 4.3, players: '90M+', type: 'mobile' },
-  { id: 7, name: 'Apex Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1656465259-icon-apex%20legends.jpg', rating: 4.6, players: '40M+', type: 'pc' },
-  { id: 8, name: 'Honor of Kings', image: 'https://cdn.unipin.com/images/icon_product_pages/1710496662-icon-hok.png', rating: 4.7, players: '110M+', type: 'mobile' },
-];
 
 export default function HomePage() {
+  const [games, setGames] = useState([]);
   const [typedText, setTypedText] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
@@ -35,6 +25,21 @@ export default function HomePage() {
 
     return () => clearInterval(typingInterval);
   }, []);
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const response = await fetch('/api/games');
+        const data = await response.json();
+        setGames(data);
+      } catch (error) {
+        console.error('Error fetching games:', error);
+      }
+    };
+
+    fetchGames();
+  }, []);
+
 
   const filteredGames = games.filter(game => 
     game.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -143,7 +148,6 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
       </main>
       <Footer/>
     </div>

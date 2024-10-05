@@ -16,3 +16,13 @@ CREATE TABLE products (
     product_bonus INT NOT NULL,
     product_price INT NOT NULL
 );
+
+CREATE TABLE game_list (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    image VARCHAR(255),
+    rating DECIMAL(2,1),
+    players VARCHAR(20),
+    type VARCHAR(20),
+    game_abr VARCHAR(10)
+);
