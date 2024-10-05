@@ -10,7 +10,7 @@ const dbConnection = mysql.createPool({
   database: process.env.MYSQL_DATABASE,
 });
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -67,6 +67,9 @@ const handler = NextAuth({
   pages: {
     signIn: '/login',
   },
-});
+};
+
+// Initialize NextAuth with authOptions
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

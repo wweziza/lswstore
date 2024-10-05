@@ -12,6 +12,7 @@ const dbConnection = mysql.createPool({
 
 export async function POST(req) {
   try {
+    
     const { username, email, password } = await req.json();
 
     const [existingUsers] = await dbConnection.execute(

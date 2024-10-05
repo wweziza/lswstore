@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server';
 import pool from '@/app/lib/mysql';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../auth/[...nextauth]/route';
 
 export async function GET(req, { params }) {
+  const session = await getServerSession({ req, ...authOptions });
+
+  if (!session || !session.user.isAdmin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  }
+  
   const { id } = params;
 
   try {
@@ -19,6 +27,12 @@ export async function GET(req, { params }) {
 }
 
 export async function PUT(req, { params }) {
+  const session = await getServerSession({ req, ...authOptions });
+
+  if (!session || !session.user.isAdmin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  }
+
   const { id } = params;
   const data = await req.json();
 
@@ -38,6 +52,12 @@ export async function PUT(req, { params }) {
 }
 
 export async function DELETE(req, { params }) {
+  const session = await getServerSession({ req, ...authOptions });
+
+  if (!session || !session.user.isAdmin) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  }
+
   const { id } = params;
 
   try {
