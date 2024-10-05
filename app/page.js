@@ -4,6 +4,7 @@ import { Search, User, Menu, X, ChevronDown, Star } from 'lucide-react';
 import Footer from './components/footer';
 import Link from 'next/link';
 import Navbar from './components/navbar';
+import { SessionProvider } from 'next-auth/react';
 const games = [
   { id: 1, name: 'Genshin Impact', image: 'https://cdn.unipin.com/images/icon_product_pages/1645066883-icon-WeChat%20Image_20220217093952.jpg', rating: 4.8, players: '50M+', type: 'mobile' },
   { id: 2, name: 'Mobile Legends', image: 'https://cdn.unipin.com/images/icon_product_pages/1714098015-icon-mlbb%20icon%20200x200_11zon.png', rating: 4.6, players: '100M+', type: 'mobile' },
