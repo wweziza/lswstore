@@ -15,7 +15,7 @@ export async function POST(req) {
             return NextResponse.json({ error: 'Invalid signature key' }, { status: 403 });
         }
 
-        const verificationResult = await core.transaction.notification(body);
+        const verificationResult = await core.transaction.status(body.order_id); 
         console.log('Verification status:', verificationResult);
 
         switch(verificationResult.transaction_status) {
@@ -23,6 +23,7 @@ export async function POST(req) {
             case 'settlement':
                 if (verificationResult.fraud_status === 'accept') {
                     console.log('Transaction successful:', verificationResult.order_id);
+                    
                 }
                 break;
             case 'deny':
