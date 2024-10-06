@@ -1,7 +1,7 @@
 import React from 'react';
 import { X } from 'lucide-react';
 
-const SummaryDialog = ({ isOpen, onClose, game, selectedOption, selectedPayment, userId, zoneId, server }) => {
+const SummaryDialog = ({ isOpen, onClose, onConfirm, game, selectedOption, selectedPayment, userId, zoneId, server }) => {
   if (!isOpen) return null;
 
   return (
@@ -27,15 +27,11 @@ const SummaryDialog = ({ isOpen, onClose, game, selectedOption, selectedPayment,
 
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-700">
           <p className="font-semibold text-lg">Please confirm the details above before proceeding.</p>
-          <p>By clicking &apos;Confirm Transaction&apos;, you agree that the transaction details are correct.</p>
+          <p>By clicking 'Confirm Transaction', you agree that the transaction details are correct.</p>
         </div>
-
         <button
           className="w-full bg-blue-500 text-white py-3 mt-6 rounded-lg hover:bg-blue-600 transition duration-300"
-          onClick={() => {
-            console.log('Transaction confirmed');
-            onClose();
-          }}
+          onClick={onConfirm}
         >
           Confirm Transaction
         </button>

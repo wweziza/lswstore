@@ -5,16 +5,68 @@ import Navbar from '@/app/components/navbar';
 import Footer from '@/app/components/footer';
 import GameIdInput from './components/gameinput';
 import SummaryDialog from './components/SummaryDialog';
+import PaymentConfirmationPopup from './components/PaymentConfirmationPopup';
+
 const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSummaryDialogOpen, setIsSummaryDialogOpen] = useState(false);
+  const [isPaymentPopupOpen, setIsPaymentPopupOpen] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState(null);
   const [userId, setUserId] = useState('');
   const [zoneId, setZoneId] = useState('');
   const [server, setServer] = useState('');
 
   const handlePayNowClick = () => {
-    setIsDialogOpen(true);
+    setIsSummaryDialogOpen(true);
+  };
+
+  const handleConfirmTransaction = async () => {
+    let endpoint = '/api/midtrans/payment';
+    let paymentType = '';
+
+    if (['BCA', 'Mandiri', 'BNI', 'BRI'].includes(selectedPayment)) {
+      paymentType = 'bank_transfer';
+    } else if (['ShopeePay', 'OVO', 'GoPay', 'DANA', 'LinkAja'].includes(selectedPayment)) {
+      paymentType = 'ewallet';
+    } else if (selectedPayment === 'QRIS') {
+      paymentType = 'qris';
+    } else {
+      console.error('Unsupported payment method');
+      return;
+    }
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          gross_amount: selectedOption.product_price,
+          order_id: `ORDER-${Date.now()}`,
+          payment_type: paymentType,
+          payment_method: selectedPayment.toLowerCase(),
+          customer_name: '[CUSTOMER_NAME]',
+          customer_email: '[CUSTOMER_EMAIL]',
+          customer_phone: '[CUSTOMER_PHONE]',
+          item_id: selectedOption.product_code,
+          item_name: selectedOption.product_type
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to generate ${paymentType} payment`);
+      }
+
+      const paymentData = await response.json();
+      setPaymentDetails(paymentData);
+      setIsSummaryDialogOpen(false);
+      setIsPaymentPopupOpen(true);
+    } catch (error) {
+      console.error(`Error generating ${paymentType} payment:`, error);
+      // Handle error (e.g., show error message to user)
+    }
   };
 
   return (
@@ -109,8 +161,9 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
       </main>
       <Footer />
       <SummaryDialog 
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        isOpen={isSummaryDialogOpen}
+        onClose={() => setIsSummaryDialogOpen(false)}
+        onConfirm={handleConfirmTransaction}
         game={game}
         selectedOption={selectedOption}
         selectedPayment={selectedPayment}
@@ -118,6 +171,14 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
         zoneId={zoneId}
         server={server}
       />
+      {isPaymentPopupOpen && paymentDetails && (
+        <PaymentConfirmationPopup
+          isOpen={isPaymentPopupOpen}
+          onClose={() => setIsPaymentPopupOpen(false)}
+          paymentDetails={paymentDetails}
+          selectedPayment={selectedPayment}
+        />
+      )}
     </div>
   );
 };
