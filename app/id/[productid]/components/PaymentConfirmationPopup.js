@@ -81,8 +81,8 @@ const PaymentConfirmationPopup = ({ isOpen, onClose, paymentDetails, selectedPay
               <h3 className="font-semibold text-lg mb-2">Payment Instructions:</h3>
               <ol className="list-decimal list-inside space-y-2">
                 <li>Log in to your mobile banking app or internet banking.</li>
-                <li>Select "Transfer" or "Pay" option.</li>
-                <li>Choose "{paymentDetails.va_numbers[0].bank} Virtual Account" as the destination.</li>
+                <li>Select &quot;Transfer&quot; or &quot;Pay&quot; option.</li>
+                <li>Choose &quot;{paymentDetails.va_numbers[0].bank} Virtual Account&quot; as the destination.</li>
                 <li>Enter the Virtual Account number: {paymentDetails.va_numbers[0].va_number}</li>
                 <li>Enter the exact amount: Rp {parseInt(paymentDetails.gross_amount).toLocaleString()}</li>
                 <li>Confirm and complete the transaction.</li>
