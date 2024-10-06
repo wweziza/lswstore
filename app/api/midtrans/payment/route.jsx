@@ -22,7 +22,12 @@ export async function POST(req) {
                     "quantity": 1,
                     "name": body.item_name
                 }
-            ]
+            ],
+            "metadata": {
+                "userid": body.userid,    
+                "zone": body.zone,           
+                "code": body.item_id         
+            }
         };
 
         switch(body.payment_type) {
