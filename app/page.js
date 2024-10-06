@@ -106,7 +106,7 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filteredGames.map((game) => (
-                <Link href={`/id/${game.id}`} key={game.id}>
+                <Link href={`/id/${game.game_abr}`} key={game.game_abr}>
                   <div className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center transition hover:shadow-lg cursor-pointer">
                     <img src={game.image} alt={game.name} className="w-32 h-32 object-cover rounded-lg mb-4" />
                     <h3 className="text-lg font-semibold text-gray-800 mb-2">{game.name}</h3>

@@ -67,3 +67,43 @@ export const fetchUsers = async (page = 1, limit = 10, sort = 'id', order = 'ASC
     return response.json();
   };
   
+  export const fetchGames = async (page = 1, limit = 10, sort = 'id', order = 'ASC') => {
+    const response = await fetch(`/api/games/index?page=${page}&limit=${limit}&sort=${sort}&order=${order}`);
+    if (!response.ok) throw new Error('Failed to fetch games');
+    return response.json();
+  };
+  
+  export const addGame = async (game) => {
+    const response = await fetch('/api/games/index', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(game),
+    });
+  
+    if (!response.ok) throw new Error('Failed to add game');
+    return response.json();
+  };
+  
+  export const updateGame = async (gameId, updates) => {
+    const response = await fetch(`/api/games/${gameId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updates),
+    });
+  
+    if (!response.ok) throw new Error('Failed to update game');
+    return response.json();
+  };
+  
+  export const deleteGame = async (gameId) => {
+    const response = await fetch(`/api/games/${gameId}`, {
+      method: 'DELETE',
+    });
+  
+    if (!response.ok) throw new Error('Failed to delete game');
+    return response.json();
+  };

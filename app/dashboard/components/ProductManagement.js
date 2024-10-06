@@ -15,6 +15,7 @@ const ProductManagement = () => {
     product_amount: 0,
     product_bonus: 0,
     product_price: 0,
+    product_code: '',
   });
 
   useEffect(() => {
@@ -37,6 +38,7 @@ const ProductManagement = () => {
         product_amount: 0,
         product_bonus: 0,
         product_price: 0,
+        product_code: '',
       });
     });
   };
@@ -112,6 +114,12 @@ const ProductManagement = () => {
           value={newProduct.product_price}
           onChange={(e) => setNewProduct({ ...newProduct, product_price: parseInt(e.target.value) })}
         />
+          <Input
+          type="text"
+          placeholder="Product Code"
+          value={newProduct.product_code}
+          onChange={(e) => setNewProduct({ ...newProduct, product_code: e.target.value })}
+        />
         <Button onClick={handleAddProduct}>Add Product</Button>
       </div>
       <Table>
@@ -141,6 +149,10 @@ const ProductManagement = () => {
               Product Price
               {sortColumn === 'product_price' && (sortDirection === 'asc' ? <ChevronUp className="inline ml-1" /> : <ChevronDown className="inline ml-1" />)}
             </TableHead>
+            <TableHead onClick={() => handleSort('product_price')}>
+              Product Code
+              {sortColumn === 'product_code' && (sortDirection === 'asc' ? <ChevronUp className="inline ml-1" /> : <ChevronDown className="inline ml-1" />)}
+            </TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -153,6 +165,7 @@ const ProductManagement = () => {
               <TableCell>{product.product_amount}</TableCell>
               <TableCell>{product.product_bonus}</TableCell>
               <TableCell>{product.product_price}</TableCell>
+              <TableCell>{product.product_code}</TableCell>
               <TableCell>
                 <Button
                   size="sm"

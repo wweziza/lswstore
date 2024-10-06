@@ -3,6 +3,7 @@ import { Users } from 'lucide-react';
 import { Card, CardHeader, CardContent, Button } from '../../components/ui';
 import UserManagement from './UserManagement';
 import ProductManagement from './ProductManagement';
+import GameManagement from './GameManagement';
 
 const AdminPanel = () => {
   const [activeAdminTab, setActiveAdminTab] = useState('users');
@@ -30,9 +31,16 @@ const AdminPanel = () => {
           >
             Manage Products
           </Button>
+          <Button 
+            onClick={() => setActiveAdminTab('game')}
+            variant={activeAdminTab === 'game' ? 'default' : 'outline'}
+          >
+            Manage Game
+          </Button>
         </div>
         {activeAdminTab === 'users' && <UserManagement />}
         {activeAdminTab === 'products' && <ProductManagement />}
+        {activeAdminTab === 'game' && <GameManagement />}
       </CardContent>
     </Card>
   );

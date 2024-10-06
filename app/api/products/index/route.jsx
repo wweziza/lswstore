@@ -48,8 +48,8 @@ export async function POST(req) {
 
   try {
     const [result] = await pool.query(
-      'INSERT INTO products (product_name, product_type, product_amount, product_bonus, product_price) VALUES (?, ?, ?, ?, ?)', 
-      [data.product_name, data.product_type, data.product_amount, data.product_bonus, data.product_price]
+      'INSERT INTO products (product_name, product_type, product_amount, product_bonus, product_price, product_code) VALUES (?, ?, ?, ?, ?, ?)', 
+      [data.product_name, data.product_type, data.product_amount, data.product_bonus, data.product_price, data.product_code]
     );
 
     const [newProduct] = await pool.query('SELECT * FROM products WHERE product_id = ?', [result.insertId]);

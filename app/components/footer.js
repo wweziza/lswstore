@@ -10,7 +10,7 @@ const Footer = () => {
               <span className="text-red-500">L</span>SW
             </div>
             <p className="text-sm">
-              Komunitas LSW sekarang menyediakan Tempat top up game termurah, tercepat, dan terpercaya di Indonesia. Proses Otomatis cepat dan lancar! Tersedia berbagai macam pembayaran Transfer Bank, E-Wallet, Scan QR, Alfamart, & Indomart yg pasti memudahkan anda untuk bertransaksi.
+              LSW sekarang menyediakan Tempat top up game termurah, tercepat, dan terpercaya di Indonesia. Proses Otomatis cepat dan lancar! Tersedia berbagai macam pembayaran Transfer Bank, E-Wallet, Scan QR, Alfamart, & Indomart yg pasti memudahkan anda untuk bertransaksi.
             </p>
           </div>
           <div className="w-full md:w-1/4 mb-6 md:mb-0">

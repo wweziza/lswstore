@@ -11,10 +11,11 @@ CREATE TABLE accounts (
 CREATE TABLE products (
     product_id INT AUTO_INCREMENT PRIMARY KEY,
     product_name VARCHAR(24) NOT NULL,
-    product_type VARCHAR(10) NOT NULL,
+    product_type VARCHAR(32) NOT NULL,
     product_amount INT NOT NULL,
     product_bonus INT NOT NULL,
-    product_price INT NOT NULL
+    product_price INT NOT NULL,
+    product_code VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE game_list (
