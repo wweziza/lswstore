@@ -20,8 +20,7 @@ Star really appreciated <3
   - Tailwind CSS
 
 - **Backend:**
-  - Node.js
-  - Express.js
+  - Next.js
 
 - **Database:**
   - MySQL
@@ -30,7 +29,7 @@ Star really appreciated <3
   - Vercel
 
 - **Payment Gateway/API**
-  - Tripay
+  - Midtrans
   - VIP-Reseller
 
 ## Getting Started
@@ -38,7 +37,7 @@ Star really appreciated <3
 1. Clone the repository:
    ```
    git clone https://github.com/wweziza/lswstore.git
-   cd gameboost
+   cd lswstore
    ```
 
 2. Install dependencies:
