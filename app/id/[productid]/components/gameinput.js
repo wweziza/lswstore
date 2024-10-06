@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 const GameIdInput = ({ game, onUserIdChange, onZoneIdChange, onServerChange }) => {
@@ -6,17 +6,20 @@ const GameIdInput = ({ game, onUserIdChange, onZoneIdChange, onServerChange }) =
   const [zoneId, setZoneId] = useState('');
   const [server, setServer] = useState('');
 
-  useEffect(() => {
-    onUserIdChange(userId);
-  }, [userId, onUserIdChange]);
+  const handleUserIdChange = (e) => {
+    setUserId(e.target.value);
+    onUserIdChange(e.target.value);
+  };
 
-  useEffect(() => {
-    onZoneIdChange(zoneId);
-  }, [zoneId, onZoneIdChange]);
+  const handleZoneIdChange = (e) => {
+    setZoneId(e.target.value);
+    onZoneIdChange(e.target.value);
+  };
 
-  useEffect(() => {
-    onServerChange(server);
-  }, [server, onServerChange]);
+  const handleServerChange = (e) => {
+    setServer(e.target.value);
+    onServerChange(e.target.value);
+  };
 
   const renderInputFields = () => {
     switch (game.game_abr) {
@@ -28,12 +31,12 @@ const GameIdInput = ({ game, onUserIdChange, onZoneIdChange, onServerChange }) =
               placeholder="Enter your User ID"
               className="flex-grow p-2 border rounded"
               value={userId}
-              onChange={(e) => setUserId(e.target.value)}
+              onChange={handleUserIdChange}
             />
             <div className="relative w-1/3">
               <select
                 value={server}
-                onChange={(e) => setServer(e.target.value)}
+                onChange={handleServerChange}
                 className="w-full p-2 border rounded appearance-none"
               >
                 <option value="">Select Server</option>
@@ -54,14 +57,14 @@ const GameIdInput = ({ game, onUserIdChange, onZoneIdChange, onServerChange }) =
               placeholder="Enter your User ID"
               className="flex-grow p-2 border rounded"
               value={userId}
-              onChange={(e) => setUserId(e.target.value)}
+              onChange={handleUserIdChange}
             />
             <input
               type="text"
               placeholder="Zone ID"
               className="w-1/3 p-2 border rounded"
               value={zoneId}
-              onChange={(e) => setZoneId(e.target.value)}
+              onChange={handleZoneIdChange}
             />
           </>
         );
@@ -73,7 +76,7 @@ const GameIdInput = ({ game, onUserIdChange, onZoneIdChange, onServerChange }) =
             placeholder="Enter your User ID"
             className="w-full p-2 border rounded"
             value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+            onChange={handleUserIdChange}
           />
         );
     }
