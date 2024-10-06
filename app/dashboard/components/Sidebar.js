@@ -43,7 +43,7 @@ const Sidebar = ({ activeTab, setActiveTab, isAdmin }) => {
           <div key={item.id} className="px-0.5 py-2">
             {item.isHeader ? (
               <h3
-                className={`text-xs font-semibold text-gray-500 uppercase tracking-wider ${
+                className={`text-xs font-semibold text-gray-500 uppercase tracking-wider ml-2 ${
                   expanded ? 'block' : 'hidden'
                 }`}
               >
