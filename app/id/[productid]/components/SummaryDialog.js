@@ -27,7 +27,7 @@ const SummaryDialog = ({ isOpen, onClose, game, selectedOption, selectedPayment,
 
         <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-blue-700">
           <p className="font-semibold text-lg">Please confirm the details above before proceeding.</p>
-          <p>By clicking 'Confirm Transaction', you agree that the transaction details are correct.</p>
+          <p>By clicking &apos;Confirm Transaction&apos;, you agree that the transaction details are correct.</p>
         </div>
 
         <button
