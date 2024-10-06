@@ -1,10 +1,19 @@
 import { NextResponse } from 'next/server';
-
 import { core } from '@/app/lib/midtrans';
+import crypto from 'crypto';
+
 export async function POST(req) {
     try {
         const body = await req.json();
         console.log('Received callback:', JSON.stringify(body));
+        const expectedSignatureKey = crypto.createHash('sha512')
+            .update(body.order_id + body.status_code + body.gross_amount + process.env.MIDTRANS_SERVER_KEY)
+            .digest('hex');
+
+        if (body.signature_key !== expectedSignatureKey) {
+            console.error('Invalid signature key!');
+            return NextResponse.json({ error: 'Invalid signature key' }, { status: 403 });
+        }
 
         const verificationResult = await core.transaction.notification(body);
         console.log('Verification status:', verificationResult);
