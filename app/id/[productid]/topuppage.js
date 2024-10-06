@@ -26,48 +26,53 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
     let paymentType = '';
 
     if (['BCA', 'Mandiri', 'BNI', 'BRI'].includes(selectedPayment)) {
-      paymentType = 'bank_transfer';
+        paymentType = 'bank_transfer';
     } else if (['ShopeePay', 'OVO', 'GoPay', 'DANA', 'LinkAja'].includes(selectedPayment)) {
-      paymentType = 'ewallet';
+        paymentType = 'ewallet';
     } else if (selectedPayment === 'QRIS') {
-      paymentType = 'qris';
+        paymentType = 'qris';
     } else {
-      console.error('Unsupported payment method');
-      return;
+        console.error('Unsupported payment method');
+        return;
     }
 
     try {
-      const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          gross_amount: selectedOption.product_price,
-          order_id: `ORDER-${Date.now()}`,
-          payment_type: paymentType,
-          payment_method: selectedPayment.toLowerCase(),
-          customer_name: '[CUSTOMER_NAME]',
-          customer_email: '[CUSTOMER_EMAIL]',
-          customer_phone: '[CUSTOMER_PHONE]',
-          item_id: selectedOption.product_code,
-          item_name: selectedOption.product_type
-        }),
-      });
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                gross_amount: selectedOption.product_price,
+                order_id: `ORDER-${Date.now()}`,
+                payment_type: paymentType,
+                payment_method: selectedPayment.toLowerCase(),
+                customer_name: '[CUSTOMER_NAME]',
+                customer_email: '[CUSTOMER_EMAIL]',
+                customer_phone: '[CUSTOMER_PHONE]',
+                item_id: selectedOption.product_code,
+                item_name: selectedOption.product_type,
+                metadata: {
+                    userid: userId, 
+                    zone: zoneId,  
+                    code: selectedOption.product_code 
+                }
+            }),
+        });
 
-      if (!response.ok) {
-        throw new Error(`Failed to generate ${paymentType} payment`);
-      }
+        if (!response.ok) {
+            throw new Error(`Failed to generate ${paymentType} payment`);
+        }
 
-      const paymentData = await response.json();
-      setPaymentDetails(paymentData);
-      setIsSummaryDialogOpen(false);
-      setIsPaymentPopupOpen(true);
+        const paymentData = await response.json();
+        setPaymentDetails(paymentData);
+        setIsSummaryDialogOpen(false);
+        setIsPaymentPopupOpen(true);
     } catch (error) {
-      console.error(`Error generating ${paymentType} payment:`, error);
-      // Handle error (e.g., show error message to user)
+        console.error(`Error generating ${paymentType} payment:`, error);
     }
-  };
+};
+
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-800">
