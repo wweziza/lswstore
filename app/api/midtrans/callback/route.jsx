@@ -23,6 +23,39 @@ export async function POST(req) {
             case 'settlement':
                 if (verificationResult.fraud_status === 'accept') {
                     console.log('Transaction successful:', verificationResult.order_id);
+                    const { metadata } = verificationResult;
+
+                    if (metadata) {
+                        console.log('Metadata - userid:', metadata.userid);
+                        console.log('Metadata - zone:', metadata.zone);
+                        console.log('Metadata - code:', metadata.code);
+
+                        const params = {
+                            key: process.env.VIPRESELLER_APIKEY,
+                            sign: process.env.VIPRESELLER_APISIGN,
+                            type: 'order',
+                            service: metadata.code,
+                            data_no: metadata.userid, 
+                            data_zone: metadata.zone 
+                          };
+                        try {
+                            const response = await fetch('https://vip-reseller.co.id/api/game-feature', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(params),
+                            });
+
+                            const result = await response.json();
+                            console.log('Response from API VIP-RESELLER:', result);
+                        } catch (error) {
+                            console.error('Error posting to API:', error);
+                        }
+
+                    } else {
+                        console.log('No metadata found in the verification result.');
+                    }
                     
                 }
                 break;

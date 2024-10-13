@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, Search, User, Menu } from 'lucide-react';
-import Link from 'next/link';
+
 import Navbar from '@/app/components/navbar';
 import Footer from '@/app/components/footer';
 import GameIdInput from './components/gameinput';
 import SummaryDialog from './components/SummaryDialog';
-
+import {AlertTitle, Alert, AlertDescription} from '../../components/ui'
 const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState(null);
@@ -13,20 +12,46 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
   const [userId, setUserId] = useState('');
   const [zoneId, setZoneId] = useState('');
   const [server, setServer] = useState('');
+  const [errors, setErrors] = useState({});
 
   const handlePayNowClick = () => {
-    setIsSummaryDialogOpen(true);
+    const newErrors = {};
+
+    if (!selectedOption) {
+      newErrors.option = "Please select a top-up option";
+    }
+    if (!selectedPayment) {
+      newErrors.payment = "Please select a payment method";
+    }
+    if (!userId) {
+      newErrors.userId = "Please enter your User ID";
+    }
+    if (game.requiresZoneId && !zoneId) {
+      newErrors.zoneId = "Please enter your Zone ID";
+    }
+    if (game.requiresServer && !server) {
+      newErrors.server = "Please select a server";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      window.scrollTo(0, 0);
+    } else {
+      setErrors({});
+      setIsSummaryDialogOpen(true);
+    }
   };
 
   const handleConfirmTransaction = async () => {
     try {
+      const grossAmount = Math.ceil(selectedOption.product_price * 1.01);
       const response = await fetch('/api/midtrans/payment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          gross_amount: selectedOption.product_price,
+          gross_amount: grossAmount,
           order_id: `ORDER-${Date.now()}`,
           item_id: selectedOption.product_code,
           item_name: selectedOption.product_type,
@@ -50,19 +75,15 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
       window.snap.pay(token, {
         onSuccess: function(result) {
           console.log('Payment success:', result);
-          // Handle successful payment
         },
         onPending: function(result) {
           console.log('Payment pending:', result);
-          // Handle pending payment
         },
         onError: function(result) {
           console.log('Payment error:', result);
-          // Handle payment error
         },
         onClose: function() {
           console.log('Customer closed the popup without finishing the payment');
-          // Handle popup closed
         }
       });
 
@@ -73,7 +94,7 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
 
   useEffect(() => {
     const midtransScriptUrl = 'https://app.midtrans.com/snap/snap.js';
-    const myMidtransClientKey = 'Mid-client-wSFU6QnB0lSGVgzJ'; // Replace with your actual client key
+    const myMidtransClientKey = process.env.MIDTRANS_CLIENT_KEY; 
 
     let scriptTag = document.createElement('script');
     scriptTag.src = midtransScriptUrl;
@@ -91,6 +112,18 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-800">
       <Navbar />
       <main className="flex-grow container mx-auto px-4 py-8">
+      {Object.keys(errors).length > 0 && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>
+              <ul className="list-disc pl-5">
+                {Object.values(errors).map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            </AlertDescription>
+          </Alert>
+        )}
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <div className="flex items-center mb-6">
             <img src={game.image} alt={game.name} className="w-16 h-16 mr-4" />
@@ -155,7 +188,7 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
             <div className="flex justify-between items-center mb-3">
               <span className="text-gray-600">Total Item</span>
               <span className="text-lg font-semibold text-gray-800">
-                {selectedOption
+                {selectedPayment
                   ? `${selectedOption.product_amount + selectedOption.product_bonus} ${selectedOption.product_type}`
                   : '-'}
               </span>
@@ -163,8 +196,9 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Price</span>
               <span className="text-lg font-semibold text-gray-800">
-                {selectedOption ? `Rp ${selectedOption.product_price.toLocaleString()}` : '-'}
+                {selectedPayment ? `Rp ${(selectedOption.product_price * 1.01).toLocaleString()}` : '-'}
               </span>
+
             </div>
           </div>
           <button 

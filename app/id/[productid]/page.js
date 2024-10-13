@@ -53,11 +53,11 @@ export default function ProductPage() {
   }
 
   const paymentMethods = [
-    { category: 'E-wallet', methods: ['ShopeePay',  'GoPay'] },
-    { category: 'Transfer Bank', methods: ['BCA', 'Mandiri', 'BNI', 'BRI'] },
+    //{ category: 'E-wallet', methods: ['ShopeePay',  'GoPay'] },
+    //{ category: 'Transfer Bank', methods: ['BCA', 'Mandiri', 'BNI', 'BRI'] },
     //{ category: 'SMS & Seluler', methods: ['Telkomsel'] },
    // { category: 'OTC non-Bank', methods: ['Indomaret', 'Alfamart'] },
-    { category: 'Others', methods: ['QRIS'] },
+    { category: 'Other', methods: ['QRIS'] },
     //{ category: 'Debit / Credit Card', methods: ['Visa', 'Mastercard'] },
   ];
 

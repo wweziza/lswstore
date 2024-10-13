@@ -95,3 +95,26 @@ export const Select = ({ children, className = '', ...props }) => (
     {children}
   </select>
 );
+
+
+export const Alert = ({ children, variant = 'default' }) => {
+  const baseClasses = 'p-4 rounded-md mb-4 flex items-start';
+  const variantClasses = {
+    default: 'bg-blue-100 text-blue-800',
+    destructive: 'bg-red-100 text-red-800',
+  };
+
+  return (
+    <div className={`${baseClasses} ${variantClasses[variant]}`}>
+      {children}
+    </div>
+  );
+};
+
+export const AlertTitle = ({ children }) => (
+  <h4 className="font-semibold text-lg mr-2">{children}</h4>
+);
+
+export const AlertDescription = ({ children }) => (
+  <div className="text-sm">{children}</div>
+);

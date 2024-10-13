@@ -22,6 +22,7 @@ const GameIdInput = ({ game, onUserIdChange, onZoneIdChange, onServerChange }) =
   };
 
   const renderInputFields = () => {
+    //console.log('here test:',game.game_abr);
     switch (game.game_abr) {
       case 'gi':
         return (
@@ -59,6 +60,7 @@ const GameIdInput = ({ game, onUserIdChange, onZoneIdChange, onServerChange }) =
               value={userId}
               onChange={handleUserIdChange}
             />
+            
             <input
               type="text"
               placeholder="Zone ID"
@@ -85,6 +87,7 @@ const GameIdInput = ({ game, onUserIdChange, onZoneIdChange, onServerChange }) =
   return (
     <div className="mb-6">
       <h2 className="text-xl font-semibold mb-2">1. Enter User ID</h2>
+      
       <div className="flex gap-4">
         {renderInputFields()}
       </div>

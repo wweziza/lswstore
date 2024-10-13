@@ -7,7 +7,7 @@ export async function GET(req) {
 
   try {
     if (query) {
-      const [game] = await pool.query('SELECT id, name, image, rating, players, type FROM game_list WHERE game_abr = ?', [query]);
+      const [game] = await pool.query('SELECT id, name, image, rating, players, type, game_abr FROM game_list WHERE game_abr = ?', [query]);
 
       if (game.length === 0) {
         return new NextResponse('Game not found', { status: 404 });
