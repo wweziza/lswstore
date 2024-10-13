@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { core } from '@/app/lib/midtrans';
+import { snap } from '@/app/lib/midtrans';
 import crypto from 'crypto';
 
 export async function POST(req) {
@@ -15,7 +15,7 @@ export async function POST(req) {
             return NextResponse.json({ error: 'Invalid signature key' }, { status: 403 });
         }
 
-        const verificationResult = await core.transaction.status(body.order_id); 
+        const verificationResult = await snap.transaction.status(body.order_id); 
         console.log('Verification status:', verificationResult);
 
         switch(verificationResult.transaction_status) {
