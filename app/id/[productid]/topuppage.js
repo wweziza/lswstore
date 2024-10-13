@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronDown, Search, User, Menu } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/app/components/navbar';
 import Footer from '@/app/components/footer';
 import GameIdInput from './components/gameinput';
 import SummaryDialog from './components/SummaryDialog';
-import PaymentConfirmationPopup from './components/PaymentConfirmationPopup';
 
 const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [isSummaryDialogOpen, setIsSummaryDialogOpen] = useState(false);
-  const [isPaymentPopupOpen, setIsPaymentPopupOpen] = useState(false);
-  const [paymentDetails, setPaymentDetails] = useState(null);
   const [userId, setUserId] = useState('');
   const [zoneId, setZoneId] = useState('');
   const [server, setServer] = useState('');
@@ -22,56 +19,72 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
   };
 
   const handleConfirmTransaction = async () => {
-    let endpoint = '/api/midtrans/payment';
-    let paymentType = '';
-
-    if (['BCA', 'Mandiri', 'BNI', 'BRI'].includes(selectedPayment)) {
-        paymentType = 'bank_transfer';
-    } else if (['ShopeePay', 'OVO', 'GoPay', 'DANA', 'LinkAja'].includes(selectedPayment)) {
-        paymentType = 'ewallet';
-    } else if (selectedPayment === 'QRIS') {
-        paymentType = 'qris';
-    } else {
-        console.error('Unsupported payment method');
-        return;
-    }
-
     try {
-        const response = await fetch(endpoint, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                gross_amount: selectedOption.product_price,
-                order_id: `ORDER-${Date.now()}`,
-                payment_type: paymentType,
-                payment_method: selectedPayment.toLowerCase(),
-                customer_name: '[CUSTOMER_NAME]',
-                customer_email: '[CUSTOMER_EMAIL]',
-                customer_phone: '[CUSTOMER_PHONE]',
-                item_id: selectedOption.product_code,
-                item_name: selectedOption.product_type,
-                metadata: {
-                    userid: userId, 
-                    zone: zoneId,  
-                    code: selectedOption.product_code 
-                }
-            }),
-        });
+      const response = await fetch('/api/midtrans/payment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          gross_amount: selectedOption.product_price,
+          order_id: `ORDER-${Date.now()}`,
+          item_id: selectedOption.product_code,
+          item_name: selectedOption.product_type,
+          customer_name: '[CUSTOMER_NAME]',
+          customer_email: '[CUSTOMER_EMAIL]@gmail.com',
+          customer_phone: '[CUSTOMER_PHONE]',
+          metadata: {
+            userid: userId,
+            zone: zoneId,
+            code: selectedOption.product_code
+          }
+        }),
+      });
 
-        if (!response.ok) {
-            throw new Error(`Failed to generate ${paymentType} payment`);
+      if (!response.ok) {
+        throw new Error('Failed to create Snap token');
+      }
+
+      const { token } = await response.json();
+
+      window.snap.pay(token, {
+        onSuccess: function(result) {
+          console.log('Payment success:', result);
+          // Handle successful payment
+        },
+        onPending: function(result) {
+          console.log('Payment pending:', result);
+          // Handle pending payment
+        },
+        onError: function(result) {
+          console.log('Payment error:', result);
+          // Handle payment error
+        },
+        onClose: function() {
+          console.log('Customer closed the popup without finishing the payment');
+          // Handle popup closed
         }
+      });
 
-        const paymentData = await response.json();
-        setPaymentDetails(paymentData);
-        setIsSummaryDialogOpen(false);
-        setIsPaymentPopupOpen(true);
     } catch (error) {
-        console.error(`Error generating ${paymentType} payment:`, error);
+      console.error('Error creating Snap token:', error);
     }
-};
+  };
+
+  useEffect(() => {
+    const midtransScriptUrl = 'https://app.midtrans.com/snap/snap.js';
+    const myMidtransClientKey = 'Mid-client-wSFU6QnB0lSGVgzJ'; // Replace with your actual client key
+
+    let scriptTag = document.createElement('script');
+    scriptTag.src = midtransScriptUrl;
+    scriptTag.setAttribute('data-client-key', myMidtransClientKey);
+
+    document.body.appendChild(scriptTag);
+
+    return () => {
+      document.body.removeChild(scriptTag);
+    }
+  }, []);
 
 
   return (
@@ -176,14 +189,6 @@ const TopUpPage = ({ game, topUpOptions, paymentMethods }) => {
         zoneId={zoneId}
         server={server}
       />
-      {isPaymentPopupOpen && paymentDetails && (
-        <PaymentConfirmationPopup
-          isOpen={isPaymentPopupOpen}
-          onClose={() => setIsPaymentPopupOpen(false)}
-          paymentDetails={paymentDetails}
-          selectedPayment={selectedPayment}
-        />
-      )}
     </div>
   );
 };

@@ -25,6 +25,11 @@ const PaymentConfirmationPopup = ({ isOpen, onClose, paymentDetails, selectedPay
           throw new Error('Failed to fetch payment status');
         }
         const data = await response.json();
+        const deeplinkRedirect = data.actions?.find(action => action.name === 'deeplink-redirect')?.url;
+        if (deeplinkRedirect) {
+          window.location.href = deeplinkRedirect;
+        }
+
         return data.transaction_status;
       } catch (error) {
         console.error('Error checking payment status:', error);
@@ -48,7 +53,6 @@ const PaymentConfirmationPopup = ({ isOpen, onClose, paymentDetails, selectedPay
       clearInterval(statusCheckInterval);
     };
   }, [isOpen, paymentDetails.order_id]);
-
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);

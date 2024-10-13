@@ -1,7 +1,44 @@
 import { NextResponse } from 'next/server';
-import { core } from '@/app/lib/midtrans';
-
+import { core, snap } from '@/app/lib/midtrans';
 export async function POST(req) {
+    try {
+        const body = await req.json();
+        console.log('Received body:', body);
+
+        let parameter = {
+            "transaction_details": {
+                "order_id": body.order_id,
+                "gross_amount": body.gross_amount
+            },
+            "item_details": [{
+                "id": body.item_id,
+                "price": body.gross_amount,
+                "quantity": 1,
+                "name": body.item_name
+            }],
+            "customer_details": {
+                "first_name": body.customer_name,
+                "email": body.customer_email,
+                "phone": body.customer_phone
+            },
+            "metadata": {
+                "userid": body.metadata.userid,
+                "zone": body.metadata.zone,
+                "code": body.metadata.code
+            }
+        };
+
+        const transaction = await snap.createTransaction(parameter);
+        console.log('Transaction:', transaction);
+
+        return NextResponse.json({ token: transaction.token }, { status: 200 });
+    } catch (error) {
+        console.error('Error occurred:', error.message);
+        return NextResponse.json({ error: 'Failed to create Snap token' }, { status: 500 });
+    }
+}
+// this is coreApi, since we cant use it for now
+/*export async function POST(req) {
     try {
         const body = await req.json();
         console.log('Received body:', body);
@@ -60,7 +97,7 @@ export async function POST(req) {
         console.error('Error occurred:', error.message);
         return NextResponse.json({ error: 'Failed to generate payment' }, { status: 500 });
     }
-}
+}*/
 
 export async function GET(req) {
     try {
